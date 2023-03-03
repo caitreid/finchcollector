@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Finch(models.Model):
@@ -10,3 +11,7 @@ class Finch(models.Model):
     # dunder str method return cat name
     def __str__(self):
         return self.name
+    
+    # this is used to direct to the detail view for a resource
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'finch_id': self.id })

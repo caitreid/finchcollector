@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Finch
 
 # temporary finches for building templates
@@ -32,3 +33,24 @@ def finches_detail(request, finch_id):
     finch = Finch.objects.get(id=finch_id)
 
     return render(request, 'finches/detail.html', { 'finch': finch })
+
+class FinchCreate(CreateView):
+    model = Finch
+    # the fields attribute is required for a createview. These inform the form
+    fields = '__all__'
+    # we could also have written our fields like this:
+    # fields = ['name', 'breed', 'description', 'age']
+    # we need to add redirects when we make a success
+    # success_url = '/finches/{finch_id}'
+    # or, we could redirect to the index page if we want
+    # success_url = '/finches'
+    # what django recommends, is adding a get_absolute_url method to the model
+
+class FinchUpdate(UpdateView):
+    model = Finch
+    # let's use custom fields to disallow renaming a finch
+    fields = ['color', 'description', 'age']
+
+class FinchDelete(DeleteView):
+    model = Finch
+    success_url = '/finches/'
